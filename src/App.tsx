@@ -1,7 +1,8 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle, IonRouterOutlet, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+
+import { analyticsOutline, addOutline } from "ionicons/icons"
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -21,20 +22,50 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import AllActivities from './pages/AllActivities';
+import AddActivity from './pages/AddActivity/AddActivity';
+import { ActivitiesContextProvider } from './data/ActivitiesContextProvider';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
+    
     <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
+    <IonMenu contentId="main-content" side='start'>
+        <IonHeader>
+          <IonToolbar>
+            
+            <IonTitle>Menu Content</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+          <IonMenuToggle>
+            <IonList>
+              <IonItem routerLink='/all-activities'>
+                <IonIcon icon={analyticsOutline} color="medium" slot="start"></IonIcon>
+                <IonLabel>All Activities</IonLabel>
+              </IonItem>
+            </IonList>
+          </IonMenuToggle>
+          <IonMenuToggle>
+            <IonList>
+              <IonItem routerLink='/add-activity'>
+                <IonIcon icon={addOutline} color="medium" slot="start"></IonIcon>
+                <IonLabel>Add Activity</IonLabel>
+              </IonItem>
+            </IonList>
+          </IonMenuToggle>
+        </IonContent>
+      </IonMenu>
+      <ActivitiesContextProvider>
+        <IonRouterOutlet id='main-content'>
+          <Route exact path="/all-activities" component={AllActivities}/>
+          <Route exact path="/add-activity" component={AddActivity}/>
+          <Redirect to="/all-activities" />
+        </IonRouterOutlet>
+      </ActivitiesContextProvider>
+      
     </IonReactRouter>
   </IonApp>
 );
